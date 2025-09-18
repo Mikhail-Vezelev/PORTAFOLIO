@@ -48,7 +48,7 @@ if (sendBtn) {
     input.value = "";
 
     // CAMBIAR LA URL!!!!!
-    fetch("https://chatbotapi.up.railway.app/api/chat", {
+    fetch("https://chatbot-api-production-547f.up.railway.app/weatherforecast", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text })
