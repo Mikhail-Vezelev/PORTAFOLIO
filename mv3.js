@@ -2,6 +2,10 @@
 const tabs = document.querySelectorAll(".tab");
 const files = document.querySelectorAll(".file");
 const explorerItems = document.querySelectorAll(".explorer li");
+const chatbox = document.getElementById("chatbox");
+const input = document.getElementById("userInput");
+const sendBtn = document.getElementById("sendBtn");
+
 
 function showFile(fileId) {
   // Quitar activo de pestañas
@@ -26,3 +30,35 @@ explorerItems.forEach(item => {
     showFile(item.dataset.file);
   });
 });
+ 
+//cahtbot
+function addMessage(sender, text) {
+  const p = document.createElement("p");
+  p.innerText = `${sender}: ${text}`;
+  chatbox.appendChild(p);
+  chatbox.scrollTop = chatbox.scrollHeight;
+}
+
+if (sendBtn) {
+  sendBtn.addEventListener("click", () => {
+    const text = input.value;
+    if (!text) return;
+
+    addMessage("Tú", text);
+    input.value = "";
+
+    // CAMBIAR LA URL!!!!!
+    fetch("https://chatbotapi.up.railway.app/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text })
+    })
+    .then(res => res.json())
+    .then(data => {
+      addMessage("Bot", data.reply);
+    })
+    .catch(() => {
+      addMessage("Bot", "Error al conectar con el servidor.");
+    });
+  });
+}
